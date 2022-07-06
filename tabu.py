@@ -13,7 +13,7 @@ def Write2Excel(results):
     solution.to_excel('loading hurestic results (Tabu).xlsx')
     return
 
-def Tabu_search(Data, Initial_Sol,alpha , beta , gamma ,tabu_size, max_iterations=1000, max_solutions=100 , MaxRunTime=60):
+def Tabu_search(Data, Initial_Sol,alpha , beta , gamma ,tabu_size, max_iterations=10000, max_solutions=10 , MaxRunTime=6):
     start=time.time()   # start the timer
     Solution_list = [ (-1*Initial_Sol.Score_Calc(Data, alpha , beta , gamma)[0], Initial_Sol) ]
     current_Sol= Solution(None) #init for while loop
@@ -25,13 +25,10 @@ def Tabu_search(Data, Initial_Sol,alpha , beta , gamma ,tabu_size, max_iteration
     while it<= max_iterations and time.time() <= start+MaxRunTime:
         # Select the solution with max score
         _  , current_Sol = heapq.heappop( Solution_list )
-        # print('Volume Utilization of current solution = %f ' %current_Sol.VU) 
-        # print('Volume Utilization = %f ' %current_Sol.VU) 
         # if the current solution is better than best solution so far change the best solution
         if current_Sol.h_score>Best_Sol.h_score:
             Best_Sol=current_Sol
             Best_Sol.Score_Calc(Data, alpha , beta , gamma)
-            # print('Volume best Utilization = %f ' %Best_Sol.VU) 
         #print current_Sol.VU, len(Solution_list)
         # genearting new solutions
         for Sol,rep in current_Sol.generate_children(10):

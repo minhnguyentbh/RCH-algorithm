@@ -11,6 +11,8 @@ class Solution:
         self.VU=None
         self.WCG=None
         self.DFF=None #ignore
+        self.totalBoxNumbers = None
+        self.summary = [self.VU, self.WCG, self.totalBoxNumbers]
         self.Loading_Results=None
     
     def generate_children(self,numberOfRandomSwap):
@@ -31,7 +33,7 @@ class Solution:
 
     def Total_Box_Number(self,Data):
         self.loading(Data)
-        TotalNumberBox=sum([a.quantity for a in Blok.AllBloks ])      
+        TotalNumberBox=sum([a.quantity for a in Blok.AllBloks ])   
         return int(TotalNumberBox)
         
         
@@ -46,7 +48,7 @@ class Solution:
         BOXS=[]
         for j in self.value:
             BOXS.append(BOX(Data,j))
-    
+        TotalInitialNumberBox=sum([a.quantity for a in BOXS ]) 
         while len(space.remainlist)!=0 and BOX.Is_unloaded_BOX():
             S=S.merge()
             j=0
@@ -72,6 +74,8 @@ class Solution:
                 S=space.curentspace()
             else:
                 break
+        TotalNumberBoxAfterLoad=sum([a.quantity for a in Blok.AllBloks ])
+        self.totalBoxNumbers = (TotalNumberBoxAfterLoad,TotalInitialNumberBox)
             
 
     
@@ -105,7 +109,10 @@ class Solution:
         # Calcualting the distance from front
         
         DFF=((DisX)/L)*100
-        
+        self.summary = [VU, WCG, self.totalBoxNumbers[0],self.totalBoxNumbers[1]]
+        results.append([""])
+        results.append(["VOLUME Utilization","WCG", "Number of loaded boxes", "Initial number of boxes"])
+        results.append(self.summary)
         self.h_score=alpha*VU+beta*WCG
         self.Loading_Results=results
         self.VU=VU

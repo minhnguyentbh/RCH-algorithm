@@ -1,3 +1,4 @@
+from numpy.random import choice
 class space:
     remainlist=[] #class attribute
     wastelist=[] #class attribute

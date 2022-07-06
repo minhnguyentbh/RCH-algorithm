@@ -6,11 +6,23 @@ from numpy.random import choice
 import time
 import math
 from tabu import Tabu_search
+import pandas as pd
 
-Data=Input(3,2)
+def Write2Excel(results):
+    writer = pd.ExcelWriter('loading hurestic results (Tabu).xlsx') 
+    solution=pd.DataFrame(results, columns=['Box Type','Box Oriantation in Blok','Quantity of box in Blok','Box priority','Blok Starting point','lenght','Width','Height'])
+    solution.to_excel(writer, sheet_name='sheet_1')
+    for column in solution:
+        column_width = max(solution[column].astype(str).map(len).max(), len(column))
+        col_idx = solution.columns.get_loc(column)
+        writer.sheets['sheet_1'].set_column(col_idx, col_idx, column_width)
+    writer.save()
+    return
+
+Data=Input(7,2)
 MaxRunTime=5
 
-alpha , beta , gamma = 0.8 , 0.2 , 0.3
+alpha , beta , gamma = 1 , 0 , 0
 tabulist_size=int(math.ceil(float(Data.ntype)/2))
 max_solutions=100
 
@@ -22,5 +34,7 @@ Initial_sol= Solution(range(Data.ntype)) # gave a starting solution
 
 (Best_Sol,Runtime )=Tabu_search(Data, Initial_sol ,alpha , beta , gamma,
                                     tabulist_size, max_solutions=max_solutions ,MaxRunTime=4 )
-print('Volume Utilization = %f ' %Best_Sol.VU)   
-print(len(Best_Sol.Loading_Results))       
+print('Volume Utilization = %f ' %Best_Sol.VU)  
+print(Best_Sol.totalBoxNumbers) 
+print(len(Best_Sol.Loading_Results))  
+Write2Excel(Best_Sol.Loading_Results)     
