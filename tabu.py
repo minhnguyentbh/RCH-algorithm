@@ -13,7 +13,7 @@ def Write2Excel(results):
     solution.to_excel('loading hurestic results (Tabu).xlsx')
     return
 
-def Tabu_search(Data, Initial_Sol,alpha , beta , gamma ,tabu_size, max_iterations=10000, max_solutions=10 , MaxRunTime=6):
+def Tabu_search(Data, Initial_Sol,alpha , beta , gamma ,tabu_size, max_iterations=2000, max_solutions=10 , MaxRunTime=6):
     start=time.time()   # start the timer
     Solution_list = [ (-1*Initial_Sol.Score_Calc(Data, alpha , beta , gamma)[0], Initial_Sol) ]
     current_Sol= Solution(None) #init for while loop
